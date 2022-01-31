@@ -1,17 +1,22 @@
-﻿using Pglet.Protocol;
-using System;
-using System.Collections.Concurrent;
+﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
+using Pglet.Protocol;
 
 namespace Pglet
 {
     public class PgletClient
     {
+        // this constant is supposed to be patched during CI build
+        const string PGLET_SERVER_VERSION = null;
+
         [DllImport("libc", SetLastError = true)]
         private static extern int chmod(string pathname, int mode);
 
@@ -141,13 +146,12 @@ namespace Pglet
                 };
             }
 
-            ws.OnFailedConnect = () =>
+            ws.OnFailedConnect = async () =>
             {
                 if (wsUrl.Host == "localhost")
                 {
-                    StartPgletServer();
+                    await StartPgletServer();
                 }
-                return Task.CompletedTask;
             };
             ws.OnReconnected = async () =>
             {
@@ -183,9 +187,12 @@ namespace Pglet
             return wssUri.Uri;
         }
 
-        private static void StartPgletServer()
+        private static async Task StartPgletServer()
         {
             Trace.TraceInformation("Starting Pglet Server in local mode");
+
+            var pgletExe = RuntimeInfo.IsWindows ? "pglet-server.exe" : "pglet";
+
             var platform = "win";
             if (RuntimeInfo.IsLinux)
             {
@@ -195,14 +202,29 @@ namespace Pglet
             {
                 platform = "osx";
             }
-            var pgletPath = Path.Combine(GetApplicationDirectory(), "runtimes", $"{platform}-{RuntimeInfo.Architecture}", RuntimeInfo.IsWindows ? "pglet-server.exe" : "pglet");
-            
-            if (!File.Exists(pgletPath))
+
+            // check for executable in "runtimes" directory
+            var pgletPath = Path.Combine(GetApplicationDirectory(), "runtimes", $"{platform}-{RuntimeInfo.Architecture}", pgletExe);
+            if (File.Exists(pgletPath))
             {
-                // override for local development
-                pgletPath = RuntimeInfo.IsWindows ? "pglet.exe" : "pglet";
+                Trace.TraceInformation("Pglet Server found in {0}", pgletPath);
             }
-            else if (RuntimeInfo.IsLinux || RuntimeInfo.IsMac)
+            else
+            {
+                // check if executable is in PATH
+                pgletPath = FindExecutablePath(pgletExe);
+                if (pgletPath != null)
+                {
+                    Trace.TraceInformation("Pglet Server found in PATH at {0}", pgletPath);
+                }
+                else
+                {
+                    // download Pglet Server executable to $HOME/.pglet/bin
+                    pgletPath = await DownloadPgletServer();
+                }
+            }
+
+            if (RuntimeInfo.IsLinux || RuntimeInfo.IsMac)
             {
                 // set chmod
                 const int _0755 = S_IRUSR | S_IXUSR | S_IWUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
@@ -222,6 +244,84 @@ namespace Pglet
             Process.Start(psi);
         }
 
+        private static async Task<string> DownloadPgletServer()
+        {
+            var platform = "windows";
+            if (RuntimeInfo.IsLinux)
+            {
+                platform = "linux";
+            }
+            else if (RuntimeInfo.IsMac)
+            {
+                platform = "darwin";
+            }
+
+            var arch = RuntimeInfo.Architecture;
+            if (RuntimeInfo.Architecture == "x64")
+            {
+                arch = "amd64";
+            }
+
+            var ext = RuntimeInfo.IsWindows ? ".exe" : "";
+
+            var homeDir = RuntimeInfo.IsWindows ? Environment.GetEnvironmentVariable("USERPROFILE") : Environment.GetEnvironmentVariable("HOME");
+            var pgletDir = Path.Combine(homeDir, ".pglet", "bin");
+            var pgletPath = Path.Combine(pgletDir, $"pglet{ext}");
+
+            if (File.Exists(pgletPath))
+            {
+                Trace.TraceInformation("Pglet Server already downloaded into {0}", pgletPath);
+                return pgletPath;
+            }
+
+            var client = new HttpClient();
+            var productValue = new ProductInfoHeaderValue("Pglet", "1.0");
+            client.DefaultRequestHeaders.UserAgent.Add(productValue);
+
+            string ver = PGLET_SERVER_VERSION;
+            if (ver == null)
+            {
+                Trace.TraceInformation("Checking Pglet releases for the latest version");
+                using (var response = await client.GetAsync("https://api.github.com/repos/pglet/pglet/releases"))
+                {
+                    response.EnsureSuccessStatusCode();
+                    using (var content = response.Content)
+                    {
+                        var releasesJson = await content.ReadAsStringAsync();
+                        var releases = JsonUtility.Deserialize<JObject[]>(releasesJson);
+                        ver = releases[0].Value<string>("name").Substring(1);
+                    }
+                }
+            }
+
+            var url = $"https://github.com/pglet/pglet/releases/download/v{ver}/pglet-{ver}-{platform}-{arch}{ext}";
+
+            if (!Directory.Exists(pgletDir))
+            {
+                Directory.CreateDirectory(pgletDir);
+            }
+
+            Trace.TraceInformation("Downloading Pglet v{0} from {1} to {2}...", ver, url, pgletPath);
+            using (var response = await client.GetAsync(url))
+            {
+                response.EnsureSuccessStatusCode();
+                using (var content = response.Content)
+                {
+                    var stream = await content.ReadAsStreamAsync();
+                    using (var file = File.Create(pgletPath))
+                    {
+                        await stream.CopyToAsync(file);
+                    }
+                }
+            }
+
+            using (var wc = new System.Net.WebClient())
+            {
+                await wc.DownloadFileTaskAsync(url, pgletPath);
+            }
+            return pgletPath;
+        }
+
         private static void OpenBrowser(string url)
         {
             string procVer = "/proc/version";
@@ -239,6 +339,19 @@ namespace Pglet
         private static string GetApplicationDirectory()
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        }
+
+        private static string FindExecutablePath(string exeFileName)
+        {
+            foreach (var path in Environment.GetEnvironmentVariable("PATH").Split(Path.PathSeparator))
+            {
+                string exePath = Path.Combine(path, exeFileName);
+                if (File.Exists(exePath))
+                {
+                    return exePath;
+                }
+            }
+            return null;
         }
 
         private static void OnExit()
