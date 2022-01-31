@@ -1,4 +1,4 @@
-﻿namespace Pglet.Controls
+﻿namespace Pglet
 {
     public class SpinButton : Control
     {
@@ -14,7 +14,7 @@
         {
             get { return GetEnumAttr<SpinButtonLabelPosition>("labelPosition"); }
             set { SetEnumAttr("labelPosition", value); }
-        }        
+        }
 
         public float Value
         {

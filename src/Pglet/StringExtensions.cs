@@ -2,7 +2,7 @@
 
 namespace Pglet
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         public static string Camelize(this string str)
         {

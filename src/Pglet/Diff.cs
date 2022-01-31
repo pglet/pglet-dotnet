@@ -74,7 +74,7 @@ namespace Pglet
     /// 2008.10.08 Fixing a test case and adding a new test case.
     /// </summary>
 
-    public class Diff
+    internal class Diff
     {
 
         /// <summary>details of one difference.</summary>

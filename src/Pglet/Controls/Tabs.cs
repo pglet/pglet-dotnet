@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Pglet.Controls
+namespace Pglet
 {
     public class Tabs : Control
     {

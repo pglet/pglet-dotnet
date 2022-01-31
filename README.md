@@ -1,4 +1,4 @@
-# Pglet client for PowerShell
+# Pglet client for .NET - quickly build interactive web apps in C#, F# or VB.NET
 
 [Pglet](https://pglet.io) is a rich User Interface (UI) framework to quickly build interactive web apps in .NET without prior knowledge of web technologies like HTTP, HTML, CSS or JavaSscript. You build UI with [controls](https://pglet.io/docs/reference/controls) which use [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web) to ensure your programs look cool and professional.
 

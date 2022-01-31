@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Pglet
 {
     // Source: https://gist.github.com/wingrime/2083cfea37cb0cfee61b0565f74d2f80
-    public class ExponentialBackoff
+    internal class ExponentialBackoff
     {
         private readonly int _delayMilliseconds;
         private readonly int _maxDelayMilliseconds;

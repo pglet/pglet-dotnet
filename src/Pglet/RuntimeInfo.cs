@@ -2,7 +2,7 @@ using System.Runtime.InteropServices;
 
 namespace Pglet
 {
-    public static class RuntimeInfo
+    internal static class RuntimeInfo
     {
         public static bool IsWindows
         {

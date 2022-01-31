@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
-namespace Pglet.Controls
+namespace Pglet
 {
     internal class GridHelper
     {

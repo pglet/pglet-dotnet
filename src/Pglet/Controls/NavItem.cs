@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Pglet.Controls
+namespace Pglet
 {
     public class NavItem : Control
     {

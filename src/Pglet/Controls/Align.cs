@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Pglet.Controls
+namespace Pglet
 {
     public enum Align
     {

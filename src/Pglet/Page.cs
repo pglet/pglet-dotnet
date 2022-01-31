@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Pglet.Controls;
 using Pglet.Protocol;
 using System;
 using System.Collections.Concurrent;
@@ -92,7 +91,7 @@ namespace Pglet
         {
             get { return GetAttr("bgcolor"); }
             set { SetAttr("bgcolor", value); }
-        }        
+        }
 
         public string Theme
         {
@@ -285,7 +284,7 @@ namespace Pglet
                 _lock.Release();
             }
         }
-        
+
         public void Insert(int at, params Control[] controls)
         {
             InsertAsync(at, controls).GetAwaiter().GetResult();
@@ -315,13 +314,13 @@ namespace Pglet
             finally
             {
                 _lock.Release();
-            }            
+            }
         }
 
         public new void Update()
         {
             UpdateAsync().GetAwaiter().GetResult();
-        }        
+        }
 
         public new void Update(CancellationToken cancellationToken)
         {
@@ -334,7 +333,7 @@ namespace Pglet
             {
                 await UpdateAsync(cts.Token);
             }
-        }        
+        }
 
         public new async Task UpdateAsync(CancellationToken cancellationToken)
         {
@@ -346,7 +345,7 @@ namespace Pglet
             finally
             {
                 _lock.Release();
-            }             
+            }
         }
 
         public async Task UpdateAsync(CancellationToken cancellationToken, params Control[] controls)
@@ -392,7 +391,7 @@ namespace Pglet
 
             tcs.Task.ContinueWith(t =>
             {
-                if(_pageEventListeners.TryRemove(tcs, out CancellationTokenRegistration ctr))
+                if (_pageEventListeners.TryRemove(tcs, out CancellationTokenRegistration ctr))
                 {
                     ctr.Dispose();
                 }
@@ -452,7 +451,7 @@ namespace Pglet
         public void Signout(CancellationToken cancellationToken)
         {
             SignoutAsync(cancellationToken).GetAwaiter().GetResult();
-        }        
+        }
 
         public async Task SignoutAsync()
         {
@@ -460,7 +459,7 @@ namespace Pglet
             {
                 await SignoutAsync(cts.Token);
             }
-        }        
+        }
 
         public async Task SignoutAsync(CancellationToken cancellationToken)
         {
@@ -470,7 +469,7 @@ namespace Pglet
         public bool CanAccess(string usersAndGroups)
         {
             return CanAccessAsync(usersAndGroups).GetAwaiter().GetResult();
-        }        
+        }
 
         public bool CanAccess(CancellationToken cancellationToken, string usersAndGroups)
         {
@@ -493,7 +492,7 @@ namespace Pglet
         public void Remove(params Control[] controls)
         {
             RemoveAsync(controls).GetAwaiter().GetResult();
-        }        
+        }
 
         public void Remove(CancellationToken cancellationToken, params Control[] controls)
         {
@@ -528,12 +527,12 @@ namespace Pglet
         public void RemoveAt(int index)
         {
             RemoveAtAsync(index).GetAwaiter().GetResult();
-        }        
+        }
 
         public void RemoveAt(CancellationToken cancellationToken, int index)
         {
             RemoveAtAsync(cancellationToken, index).GetAwaiter().GetResult();
-        }        
+        }
 
         public async Task RemoveAtAsync(int index)
         {
@@ -582,7 +581,7 @@ namespace Pglet
         public void Error(string message)
         {
             ErrorAsync(message).GetAwaiter().GetResult();
-        }        
+        }
 
         public void Error(CancellationToken cancellationToken, string message)
         {
@@ -658,7 +657,7 @@ namespace Pglet
                 }
 
                 // notify event listeners
-                foreach(var tcs in _pageEventListeners.Keys.ToArray())
+                foreach (var tcs in _pageEventListeners.Keys.ToArray())
                 {
                     tcs.TrySetResult(ce);
                 }

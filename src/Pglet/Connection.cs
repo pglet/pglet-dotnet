@@ -45,7 +45,7 @@ namespace Pglet
         private async Task OnMessage(byte[] message)
         {
             var j = Encoding.UTF8.GetString(message);
-            var m = JsonUtility.Deserialize<Message>(j);
+            var m = JsonUtility.Deserialize<Protocol.Message>(j);
 
             //Console.WriteLine($"OnMessage: {m.Payload}");
 
@@ -100,7 +100,7 @@ namespace Pglet
 
             var respPayload = await SendMessageWithResult(Actions.RegisterHostClient, payload, cancellationToken);
             Trace.TraceInformation("Connection: RegisterHostClient response: {0}", respPayload);
-            
+
             var result = JsonUtility.Deserialize<RegisterHostClientResponsePayload>(respPayload);
             if (!String.IsNullOrEmpty(result.Error))
             {
@@ -154,7 +154,7 @@ namespace Pglet
         private async Task<JObject> SendMessageInternal(string messageId, string actionName, object payload, CancellationToken cancellationToken)
         {
             // send request
-            var msg = new Message
+            var msg = new Protocol.Message
             {
                 Id = messageId,
                 Action = actionName,

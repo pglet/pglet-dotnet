@@ -6,7 +6,7 @@ using System;
 
 namespace Pglet
 {
-    public class JsonUtility
+    internal class JsonUtility
     {
         public static T Deserialize<T>(string json)
         {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Pglet.Controls
+namespace Pglet
 {
     public class Grid : Control
     {
@@ -33,10 +33,10 @@ namespace Pglet.Controls
                 if (_selectedItems != null)
                 {
                     List<int> indices = new();
-                    foreach(var selectedItem in _selectedItems)
+                    foreach (var selectedItem in _selectedItems)
                     {
                         var idx = 0;
-                        foreach(var item in this._items.Items)
+                        foreach (var item in this._items.Items)
                         {
                             if (item == selectedItem)
                             {

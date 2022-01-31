@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Pglet.Controls
+namespace Pglet
 {
     public class DatePicker : Control
     {

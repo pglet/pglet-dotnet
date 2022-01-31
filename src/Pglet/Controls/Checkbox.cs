@@ -1,4 +1,4 @@
-﻿namespace Pglet.Controls
+﻿namespace Pglet
 {
     public class Checkbox : Control
     {
