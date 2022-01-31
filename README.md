@@ -1,28 +1,26 @@
 # Pglet client for PowerShell
 
-[Pglet](https://pglet.io) (*"piglet"*) is a rich user interface (UI) framework for scripts written in PowerShell or any other language. 
-Pglet renders web UI, so you can easily [build web apps](https://pglet.io/docs/quickstart) with PowerShell.
-Knowledge of HTML/CSS/JavaScript is not required as you build UI with [controls](https://pglet.io/docs/reference/controls). Pglet controls are built with [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web) to ensure your programs look cool and professional.
+[Pglet](https://pglet.io) is a rich User Interface (UI) framework to quickly build interactive web apps in .NET without prior knowledge of web technologies like HTTP, HTML, CSS or JavaSscript. You build UI with [controls](https://pglet.io/docs/reference/controls) which use [Fluent UI React](https://developer.microsoft.com/en-us/fluentui#/controls/web) to ensure your programs look cool and professional.
 
 ## Requirements
 
-* Windows PowerShell 5.1
-* PowerShell Core 7 on Windows, Linux or macOS
+* .NET Framework 4.6.1 or above
+* .NET Core 5 or above on Windows, Linux or macOS
 
 ## Installation
 
-Install `pglet` module from PowerShell Gallery:
+Add `pglet` package to your project:
 
-    Install-Module pglet
+```
+dotnet add package Pglet
+```
 
 ## Hello, world!
 
 Create a new `hello.ps1` with the following content:
 
 ```posh
-Import-Module pglet
-Connect-PgletPage
-Invoke-Pglet "add text value='Hello, world!'"
+TODO
 ```
 
 Run `hello.ps1` in your PowerShell session and in a new browser window you'll get:

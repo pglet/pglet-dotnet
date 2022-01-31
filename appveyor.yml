@@ -4,8 +4,6 @@ image: Ubuntu
 environment:
   configuration: Release
   PGLET_VERSION: 0.5.6
-  psg_api_key: 
-    secure: +pKWU6lrUYmSwimeMa47F6FsT9+lS76DYwU2MYkAbqWnNTSVQ6rJQgITFuxz3ST5
   nuget_api_key:
     secure: 7qhExxbMr9K4LxzMbhJ2YHynyvZde6y/6duaZuT1Vzyg6CfI9QHDJD2y8DWtGXSA
 
@@ -34,7 +32,7 @@ build_script:
 
     if ($env:APPVEYOR_REPO_TAG -eq 'true') {
 
-      Write-Host "Publishing module to PowerShell Gallery..."
+      Write-Host "Publishing module to NuGet Gallery..."
 
       # version
       $ver = $env:APPVEYOR_REPO_TAG_NAME
@@ -58,24 +56,6 @@ build_script:
     Write-Host "Version suffix: $ver_suffix"
 
     dotnet build src\Pglet --configuration $env:CONFIGURATION /p:Version=$ver
-    dotnet build src\Pglet.PowerShell --configuration $env:CONFIGURATION /p:Version=$ver
-
-    # copy module contents
-    New-Item pglet -Type Directory | Out-Null
-    Copy-Item -Path *.psd1 -Destination pglet
-    Copy-Item -Path *.psm1 -Destination pglet
-    Copy-Item -Path 'bin' -Destination pglet -Recurse
-    Copy-Item -Path 'runtimes' -Destination pglet/bin -Recurse
-    Get-ChildItem pglet -Recurse
-
-    # publish module
-    if ($env:APPVEYOR_REPO_TAG -eq 'true') {
-      (Get-Content pglet\pglet.psd1).replace("ModuleVersion     = '0.1.0'", "ModuleVersion = '$ver_num'") | Set-Content pglet\pglet.psd1
-      if ($ver_suffix) {(Get-Content pglet\pglet.psd1).replace("# Prerelease = 'beta'", "Prerelease = '$ver_suffix'") | Set-Content pglet\pglet.psd1}
-      Publish-Module -Path $env:APPVEYOR_BUILD_FOLDER\pglet -NuGetApiKey $env:psg_api_key
-
-      Write-Host "Module has been successfully published" -ForegroundColor Green
-    }
 
 artifacts:
   - path: '**/*.nupkg'

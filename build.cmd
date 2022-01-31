@@ -1,1 +1,1 @@
-dotnet build src\Pglet.PowerShell
+dotnet build src\Pglet
