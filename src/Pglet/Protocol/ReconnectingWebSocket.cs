@@ -58,18 +58,18 @@ namespace Pglet.Protocol
         {
             Trace.TraceInformation("ReconnectingWebSocket: Connect()");
             _cancellationToken = cancellationToken;
-            return ConnectInternal();
+            return ConnectInternal(IsLocalhost() ? LOCAL_CONNECT_ATTEMPTS : REMOTE_CONNECT_ATTEMPTS);
         }
 
-        private async Task ConnectInternal()
+        private async Task ConnectInternal(int attempts)
         {
             Trace.TraceInformation("ReconnectingWebSocket: ConnectInternal()");
-            bool isLocal = _uri.Host == "localhost";
 
             bool failedConnectCalled = false;
-            for (int i = 1; i < (isLocal ? LOCAL_CONNECT_ATTEMPTS : REMOTE_CONNECT_ATTEMPTS) + 1; i++)
+            int timeoutMs = IsLocalhost() ? LOCAL_CONNECT_TIMEOUT_MS : REMOTE_CONNECT_TIMEOUT_MS;
+            for (int i = 1; i < attempts + 1; i++)
             {
-                using (CancellationTokenSource timeout = new CancellationTokenSource(isLocal ? LOCAL_CONNECT_TIMEOUT_MS : REMOTE_CONNECT_TIMEOUT_MS))
+                using (CancellationTokenSource timeout = new CancellationTokenSource(timeoutMs))
                 {
                     using (var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, timeout.Token))
                     {
@@ -89,6 +89,11 @@ namespace Pglet.Protocol
                                 _ = _onFailedConnect();
                                 failedConnectCalled = true;
                             }
+                            if (i == attempts)
+                            {
+                                throw ex;
+                            }
+                            await Task.Delay(timeoutMs);
                         }
                     }
                 }
@@ -117,7 +122,7 @@ namespace Pglet.Protocol
                 {
                     try
                     {
-                        await ConnectInternal();
+                        await ConnectInternal(1);
 
                         if (_onReconnected != null)
                         {
@@ -260,6 +265,11 @@ namespace Pglet.Protocol
             {
                 Trace.TraceInformation("ReconnectingWebSocket: Exiting write loop");
             }
+        }
+
+        private bool IsLocalhost()
+        {
+            return _uri.Host == "localhost";
         }
 
         public async Task CloseAsync()
