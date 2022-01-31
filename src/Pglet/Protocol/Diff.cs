@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Text.RegularExpressions;
 
-namespace Pglet
+namespace Pglet.Protocol
 {
     /// <summary>
     /// http://www.mathertel.de/Diff/
@@ -74,7 +74,7 @@ namespace Pglet
     /// 2008.10.08 Fixing a test case and adding a new test case.
     /// </summary>
 
-    internal class Diff
+    public class Diff
     {
 
         /// <summary>details of one difference.</summary>

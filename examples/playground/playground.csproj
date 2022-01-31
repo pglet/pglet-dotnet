@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pglet\Pglet.csproj" />
+    <ProjectReference Include="..\..\src\Pglet\Pglet.csproj" />
   </ItemGroup>
 
 </Project>

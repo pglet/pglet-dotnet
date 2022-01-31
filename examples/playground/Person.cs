@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Pglet.Tests
+namespace Playground
 {
     public class Person
     {

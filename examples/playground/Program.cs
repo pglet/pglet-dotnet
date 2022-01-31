@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
-using Pglet.Controls;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Pglet;
 
-namespace Pglet.Tests
+namespace Playground
 {
     class Program
     {
@@ -487,7 +487,7 @@ namespace Pglet.Tests
         {
             var a1 = a.Replace(',', '\n');
             var b1 = b.Replace(',', '\n');
-            var f = Diff.DiffText(a1, b1, false, false, false);
+            var f = Pglet.Protocol.Diff.DiffText(a1, b1, false, false, false);
 
             string[] aLines = a1.Split('\n');
             string[] bLines = b1.Split('\n');
@@ -500,7 +500,7 @@ namespace Pglet.Tests
             int n = 0;
             for (int fdx = 0; fdx < f.Length; fdx++)
             {
-                Diff.Item aItem = f[fdx];
+                Pglet.Protocol.Diff.Item aItem = f[fdx];
 
                 // write unchanged lines
                 while ((n < aItem.StartB) && (n < bLines.Length))
@@ -533,7 +533,7 @@ namespace Pglet.Tests
 
         private static void TestIntDiff(int[] a, int[] b)
         {
-            var f = Diff.DiffInt(a, b);
+            var f = Pglet.Protocol.Diff.DiffInt(a, b);
 
             void WriteLine(int nr, string typ, int num)
             {
@@ -543,7 +543,7 @@ namespace Pglet.Tests
             int n = 0;
             for (int fdx = 0; fdx < f.Length; fdx++)
             {
-                Diff.Item aItem = f[fdx];
+                Pglet.Protocol.Diff.Item aItem = f[fdx];
 
                 // write unchanged lines
                 while ((n < aItem.StartB) && (n < b.Length))
