@@ -125,12 +125,12 @@ namespace Pglet
 
         public int WinWidth
         {
-            get { return GetIntAttr("win_width"); }
+            get { return GetIntAttr("winwidth"); }
         }
 
         public int WinHeight
         {
-            get { return GetIntAttr("win_height"); }
+            get { return GetIntAttr("winheight"); }
         }
 
         public string Signin
@@ -151,34 +151,34 @@ namespace Pglet
             set { SetBoolAttr("signinGroups", value); }
         }
 
+        public string UserAuthProvider
+        {
+            get { return GetAttr("userAuthProvider"); }
+        }
+
         public string UserId
         {
             get { return GetAttr("userId"); }
-            set { SetAttr("userId", value); }
         }
 
         public string UserLogin
         {
             get { return GetAttr("userLogin"); }
-            set { SetAttr("userLogin", value); }
         }
 
         public string UserName
         {
             get { return GetAttr("userName"); }
-            set { SetAttr("userName", value); }
         }
 
         public string UserEmail
         {
             get { return GetAttr("userEmail"); }
-            set { SetAttr("userEmail", value); }
         }
 
         public string UserClientIP
         {
             get { return GetAttr("userClientIP"); }
-            set { SetAttr("userClientIP", value); }
         }
 
         public EventHandler OnClose
@@ -234,8 +234,9 @@ namespace Pglet
             var values = (await _conn.SendCommands(_pageName, _sessionId, new List<Command>
             {
                 new Protocol.Command { Name = "get", Values = new List<string> { "page", "hash" } },
-                new Protocol.Command { Name = "get", Values = new List<string> { "page", "win_width" } },
-                new Protocol.Command { Name = "get", Values = new List<string> { "page", "win_height" } },
+                new Protocol.Command { Name = "get", Values = new List<string> { "page", "winwidth" } },
+                new Protocol.Command { Name = "get", Values = new List<string> { "page", "winheight" } },
+                new Protocol.Command { Name = "get", Values = new List<string> { "page", "userauthprovider" } },
                 new Protocol.Command { Name = "get", Values = new List<string> { "page", "userid" } },
                 new Protocol.Command { Name = "get", Values = new List<string> { "page", "userlogin" } },
                 new Protocol.Command { Name = "get", Values = new List<string> { "page", "username" } },
@@ -244,13 +245,14 @@ namespace Pglet
             }, CancellationToken.None)).Results;
 
             SetAttr("hash", values[0], dirty: false);
-            SetAttr("win_width", values[1], dirty: false);
-            SetAttr("win_height", values[2], dirty: false);
-            SetAttr("userid", values[3], dirty: false);
-            SetAttr("userlogin", values[4], dirty: false);
-            SetAttr("username", values[5], dirty: false);
-            SetAttr("useremail", values[6], dirty: false);
-            SetAttr("userclientip", values[7], dirty: false);
+            SetAttr("winwidth", values[1], dirty: false);
+            SetAttr("winheight", values[2], dirty: false);
+            SetAttr("userauthprovider", values[3], dirty: false);
+            SetAttr("userid", values[4], dirty: false);
+            SetAttr("userlogin", values[5], dirty: false);
+            SetAttr("username", values[6], dirty: false);
+            SetAttr("useremail", values[7], dirty: false);
+            SetAttr("userclientip", values[8], dirty: false);
         }
 
         public void Add(params Control[] controls)

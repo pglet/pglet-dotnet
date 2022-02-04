@@ -89,6 +89,12 @@ namespace Pglet
             set { SetBoolAttr("scrolly", value); }
         }
 
+        public bool AutoScroll
+        {
+            get { return GetBoolAttr("autoscroll"); }
+            set { SetBoolAttr("autoscroll", value); }
+        }
+
         public string BgColor
         {
             get { return GetAttr("bgColor"); }
