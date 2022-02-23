@@ -86,10 +86,28 @@ namespace Pglet
             set { SetAttr("iconColor", value); }
         }
 
+        public bool Focused
+        {
+            get { return GetBoolAttr("focused"); }
+            set { SetBoolAttr("focused", value); }
+        }
+
         public EventHandler OnClick
         {
             get { return GetEventHandler("click"); }
             set { SetEventHandler("click", value); }
+        }
+
+        public EventHandler OnFocus
+        {
+            get { return GetEventHandler("focus"); }
+            set { SetEventHandler("focus", value); }
+        }
+
+        public EventHandler OnBlur
+        {
+            get { return GetEventHandler("blur"); }
+            set { SetEventHandler("blur", value); }
         }
 
         protected override IEnumerable<Control> GetChildren()

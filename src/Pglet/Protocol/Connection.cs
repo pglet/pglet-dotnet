@@ -85,7 +85,7 @@ namespace Pglet.Protocol
             }
         }
 
-        public async Task<RegisterHostClientResponsePayload> RegisterHostClient(string pageName, bool isApp, string authToken, string permissions, CancellationToken cancellationToken)
+        public async Task<RegisterHostClientResponsePayload> RegisterHostClient(string pageName, bool isApp, bool update, string authToken, string permissions, CancellationToken cancellationToken)
         {
             Trace.TraceInformation("Connection: RegisterHostClient");
             var payload = new RegisterHostClientRequestPayload
@@ -93,6 +93,7 @@ namespace Pglet.Protocol
                 HostClientID = this.HostClientId,
                 PageName = String.IsNullOrEmpty(pageName) ? "*" : pageName,
                 IsApp = isApp,
+                Update = update,
                 AuthToken = authToken,
                 Permissions = permissions
             };

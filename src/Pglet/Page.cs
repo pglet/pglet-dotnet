@@ -217,6 +217,18 @@ namespace Pglet
             set { SetEventHandler("resize", value); }
         }
 
+        public EventHandler OnConnect
+        {
+            get { return GetEventHandler("connect"); }
+            set { SetEventHandler("connect", value); }
+        }
+
+        public EventHandler OnDisconnect
+        {
+            get { return GetEventHandler("disconnect"); }
+            set { SetEventHandler("disconnect", value); }
+        }
+
         protected override string ControlName => "page";
 
         public Page(Connection conn, string pageUrl, string pageName, string sessionId) : base()

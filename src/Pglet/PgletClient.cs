@@ -55,12 +55,12 @@ namespace Pglet
             };
         }
 
-        public static async Task<Page> ConnectPage(string pageName = null, bool web = false,
+        public static async Task<Page> ConnectPage(string pageName = null, bool update = false, bool web = false,
             string serverUrl = null, string token = null, bool noWindow = false, string permissions = null,
             Func<Connection, string, string, string, Page> createPage = null, CancellationToken? cancellationToken = null)
         {
             var ct = cancellationToken.HasValue ? cancellationToken.Value : CancellationToken.None;
-            var conn = await ConnectInternal(pageName, false, web, serverUrl, token, permissions, noWindow, null, createPage, ct);
+            var conn = await ConnectInternal(pageName, false, update, web, serverUrl, token, permissions, noWindow, null, createPage, ct);
 
             Page page = createPage != null ? createPage(conn, conn.PageUrl, conn.PageName, ZERO_SESSION) : new Page(conn, conn.PageUrl, conn.PageName, ZERO_SESSION);
             await page.LoadPageDetails();
@@ -73,7 +73,7 @@ namespace Pglet
             Func<Connection, string, string, string, Page> createPage = null, Action<string> pageCreated = null, CancellationToken? cancellationToken = null)
         {
             var ct = cancellationToken.HasValue ? cancellationToken.Value : CancellationToken.None;
-            var conn = await ConnectInternal(pageName, true, web, serverUrl, token, permissions, noWindow, sessionHandler, createPage, ct);
+            var conn = await ConnectInternal(pageName, true, false, web, serverUrl, token, permissions, noWindow, sessionHandler, createPage, ct);
 
             pageCreated?.Invoke(conn.PageUrl);
 
@@ -87,7 +87,7 @@ namespace Pglet
         }
 
         private static async Task<Connection> ConnectInternal(string pageName, bool isApp,
-            bool web, string serverUrl, string token, string permissions, bool noWindow,
+            bool update, bool web, string serverUrl, string token, string permissions, bool noWindow,
             Func<Page, Task> sessionHandler, Func<Connection, string, string, string, Page> createPage,
             CancellationToken cancellationToken)
         {
@@ -155,12 +155,12 @@ namespace Pglet
             };
             ws.OnReconnected = async () =>
             {
-                await conn.RegisterHostClient(pageName, isApp, token, permissions, cancellationToken);
+                await conn.RegisterHostClient(pageName, isApp, update, token, permissions, cancellationToken);
             };
 
             await ws.Connect(cancellationToken);
 
-            var resp = await conn.RegisterHostClient(pageName, isApp, token, permissions, cancellationToken);
+            var resp = await conn.RegisterHostClient(pageName, isApp, update, token, permissions, cancellationToken);
             conn.PageName = resp.PageName;
             conn.PageUrl = GetPageUrl(serverUrl, conn.PageName).ToString();
 

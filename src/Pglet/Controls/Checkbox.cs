@@ -22,6 +22,12 @@
             set { SetAttr("value", $"{{{value}}}"); }
         }
 
+        public bool Focused
+        {
+            get { return GetBoolAttr("focused"); }
+            set { SetBoolAttr("focused", value); }
+        }
+
         public BoxSide BoxSide
         {
             get { return GetEnumAttr<BoxSide>("boxSide"); }

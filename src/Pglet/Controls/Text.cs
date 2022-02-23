@@ -76,58 +76,56 @@
             set { SetAttr("bgColor", value); }
         }
 
-        public string Border
+        public SideValues<BorderStyle> BorderStyle
         {
-            get { return GetAttr("border"); }
-            set { SetAttr("border", value); }
+            get
+            {
+                var v = GetAttr("borderStyle");
+                return v != null ? SideValues<BorderStyle>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderStyle", value != null ? value.ToString() : null);
+            }
         }
 
-        public BorderStyle BorderStyle
+        public SideValues<string> BorderWidth
         {
-            get { return GetEnumAttr<BorderStyle>("borderStyle"); }
-            set { SetEnumAttr("borderStyle", value); }
+            get
+            {
+                var v = GetAttr("borderWidth");
+                return v != null ? SideValues<string>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderWidth", value != null ? value.ToString() : null);
+            }
         }
 
-        public string BorderWidth
+        public SideValues<string> BorderColor
         {
-            get { return GetAttr("borderWidth"); }
-            set { SetAttr("borderWidth", value); }
+            get
+            {
+                var v = GetAttr("borderColor");
+                return v != null ? SideValues<string>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderColor", value != null ? value.ToString() : null);
+            }
         }
 
-        public string BorderColor
+        public SideValues<string> BorderRadius
         {
-            get { return GetAttr("borderColor"); }
-            set { SetAttr("borderColor", value); }
-        }
-
-        public string BorderRadius
-        {
-            get { return GetAttr("borderRadius"); }
-            set { SetAttr("borderRadius", value); }
-        }
-
-        public string BorderLeft
-        {
-            get { return GetAttr("borderLeft"); }
-            set { SetAttr("borderLeft", value); }
-        }
-
-        public string BorderRight
-        {
-            get { return GetAttr("borderRight"); }
-            set { SetAttr("borderRight", value); }
-        }
-
-        public string BorderTop
-        {
-            get { return GetAttr("borderTop"); }
-            set { SetAttr("borderTop", value); }
-        }
-
-        public string BorderBottom
-        {
-            get { return GetAttr("borderBottom"); }
-            set { SetAttr("borderBottom", value); }
+            get
+            {
+                var v = GetAttr("borderRadius");
+                return v != null ? SideValues<string>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderRadius", value != null ? value.ToString() : null);
+            }
         }
     }
 }

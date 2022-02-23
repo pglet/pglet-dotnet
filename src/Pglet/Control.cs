@@ -153,7 +153,7 @@ namespace Pglet
         public void Clean(CancellationToken cancellationToken)
         {
             CleanAsync(cancellationToken).GetAwaiter().GetResult();
-        }        
+        }
 
         public async Task CleanAsync()
         {
@@ -308,7 +308,6 @@ namespace Pglet
         internal void SetAttr(string name, string value, bool dirty = true)
         {
             SetAttrInternal(name, value, dirty);
-
         }
 
         internal virtual void SetAttrInternal(string name, string value, bool dirty = true)

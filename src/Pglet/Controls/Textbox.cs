@@ -106,6 +106,12 @@
             set { SetBoolAttr("borderless", value); }
         }
 
+        public bool Focused
+        {
+            get { return GetBoolAttr("focused"); }
+            set { SetBoolAttr("focused", value); }
+        }
+
         public EventHandler OnChange
         {
             get { return GetEventHandler("change"); }
@@ -114,6 +120,18 @@
                 SetEventHandler("change", value);
                 SetBoolAttr("onchange", value != null);
             }
+        }
+
+        public EventHandler OnFocus
+        {
+            get { return GetEventHandler("focus"); }
+            set { SetEventHandler("focus", value); }
+        }
+
+        public EventHandler OnBlur
+        {
+            get { return GetEventHandler("blur"); }
+            set { SetEventHandler("blur", value); }
         }
     }
 }
