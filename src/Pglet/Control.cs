@@ -266,7 +266,7 @@ namespace Pglet
             SetAttr(name, value.HasValue ? value.Value.ToString() : "");
         }
 
-        internal int? GetNullableIntAttr(string name)
+        protected int? GetNullableIntAttr(string name)
         {
             return _attrs.ContainsKey(name) && !String.IsNullOrEmpty(_attrs[name].Value) ? Int32.Parse(_attrs[name].Value) : null;
 
@@ -277,7 +277,7 @@ namespace Pglet
             SetAttr(name, value.ToString().ToLowerInvariant());
         }
 
-        internal int GetIntAttr(string name, int defValue = 0)
+        protected int GetIntAttr(string name, int defValue = 0)
         {
             return _attrs.ContainsKey(name) ? Int32.Parse(_attrs[name].Value) : defValue;
 
@@ -288,7 +288,7 @@ namespace Pglet
             SetAttr(name, value.HasValue ? value.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture) : null);
         }
 
-        internal DateTime? GetDateAttr(string name)
+        protected DateTime? GetDateAttr(string name)
         {
             return _attrs.ContainsKey(name) ? DateTime.Parse(_attrs[name].Value) : null;
 
@@ -299,13 +299,13 @@ namespace Pglet
             SetAttr(name, value.ToString().ToLowerInvariant());
         }
 
-        internal bool GetBoolAttr(string name, bool defValue = false)
+        protected bool GetBoolAttr(string name, bool defValue = false)
         {
             return _attrs.ContainsKey(name) ? Boolean.Parse(_attrs[name].Value) : defValue;
 
         }
 
-        internal void SetAttr(string name, string value, bool dirty = true)
+        protected void SetAttr(string name, string value, bool dirty = true)
         {
             SetAttrInternal(name, value, dirty);
         }
@@ -340,7 +340,7 @@ namespace Pglet
 
         }
 
-        internal void SetAttr<T>(string name, T value, bool dirty = true) where T : notnull
+        protected void SetAttr<T>(string name, T value, bool dirty = true) where T : notnull
         {
             if (value != null)
             {

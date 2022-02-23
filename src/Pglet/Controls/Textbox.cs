@@ -70,6 +70,24 @@
             set { SetBoolAttr("multiline", value); }
         }
 
+        public int? Rows
+        {
+            get { return GetNullableIntAttr("rows"); }
+            set { SetNullableIntAttr("rows", value); }
+        }
+
+        public bool Resizable
+        {
+            get { return GetBoolAttr("resizable"); }
+            set { SetBoolAttr("resizable", value); }
+        }
+
+        public bool ShiftEnter
+        {
+            get { return GetBoolAttr("shiftEnter"); }
+            set { SetBoolAttr("shiftEnter", value); }
+        }
+
         public bool Password
         {
             get { return GetBoolAttr("password"); }

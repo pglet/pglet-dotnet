@@ -101,40 +101,56 @@ namespace Pglet
             set { SetAttr("bgColor", value); }
         }
 
-        public string Border
+        public SideValues<BorderStyle> BorderStyle
         {
-            get { return GetAttr("border"); }
-            set { SetAttr("border", value); }
+            get
+            {
+                var v = GetAttr("borderStyle");
+                return v != null ? SideValues<BorderStyle>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderStyle", value != null ? value.ToString() : null);
+            }
         }
 
-        public string BorderRadius
+        public SideValues<string> BorderWidth
         {
-            get { return GetAttr("borderRadius"); }
-            set { SetAttr("borderRadius", value); }
+            get
+            {
+                var v = GetAttr("borderWidth");
+                return v != null ? SideValues<string>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderWidth", value != null ? value.ToString() : null);
+            }
         }
 
-        public string BorderLeft
+        public SideValues<string> BorderColor
         {
-            get { return GetAttr("borderLeft"); }
-            set { SetAttr("borderLeft", value); }
+            get
+            {
+                var v = GetAttr("borderColor");
+                return v != null ? SideValues<string>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderColor", value != null ? value.ToString() : null);
+            }
         }
 
-        public string BorderRight
+        public SideValues<string> BorderRadius
         {
-            get { return GetAttr("borderRight"); }
-            set { SetAttr("borderRight", value); }
-        }
-
-        public string BorderTop
-        {
-            get { return GetAttr("borderTop"); }
-            set { SetAttr("borderTop", value); }
-        }
-
-        public string BorderBottom
-        {
-            get { return GetAttr("borderBottom"); }
-            set { SetAttr("borderBottom", value); }
+            get
+            {
+                var v = GetAttr("borderRadius");
+                return v != null ? SideValues<string>.Parse(v) : null;
+            }
+            set
+            {
+                SetAttr("borderRadius", value != null ? value.ToString() : null);
+            }
         }
 
         public EventHandler OnSubmit

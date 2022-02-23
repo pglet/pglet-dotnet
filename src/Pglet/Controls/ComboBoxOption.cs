@@ -1,6 +1,6 @@
 ﻿namespace Pglet
 {
-    public class DropdownOption : Control
+    public class ComboBoxOption : Control
     {
         protected override string ControlName => "option";
 
@@ -16,9 +16,9 @@
             set { SetAttr("text", value); }
         }
 
-        public DropdownOptionType ItemType
+        public ComboBoxOptionType ItemType
         {
-            get { return GetEnumAttr<DropdownOptionType>("itemType"); }
+            get { return GetEnumAttr<ComboBoxOptionType>("itemType"); }
             set { SetEnumAttr("itemType", value); }
         }
     }
